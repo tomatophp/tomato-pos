@@ -23,7 +23,7 @@ php artisan tomato-pos:install
 you need to add style.css to you app.css please on this file `resources/css/app.css` add this line after the imports 
 
 ```css
-@import url('../../vendor/tomatophp/resources/css/style.css');
+@import url('../../vendor/tomatophp/tomato-pos/resources/css/style.css');
 ```
 
 ## Publish Assets

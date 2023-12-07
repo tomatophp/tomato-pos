@@ -12,7 +12,7 @@ class TomatoPosServiceProvider extends ServiceProvider
     {
         //Register generate command
         $this->commands([
-           \Tomatophp\TomatoPos\Console\TomatoPosInstall::class,
+           \TomatoPHP\TomatoPos\Console\TomatoPosInstall::class,
         ]);
 
         //Register Config file
