@@ -255,7 +255,7 @@ class TomatoPosController extends Controller
     {
         $query = Inventory::query();
         $query->where('is_transaction', 1);
-        $query->where('branch_id', $this->branchID());
+        $query->where('to_branch_id', $this->branchID());
         if($request->has('date') && $request->get('date')){
             $query->whereDate('created_at', Carbon::parse($request->get('date'))->toDateString());
         }
@@ -444,10 +444,12 @@ class TomatoPosController extends Controller
     }
 
     public function store(Request $request){
-        $branch = Branch::find($this->branchID());
+        $fromBranch = Branch::find($this->branchID());
+        $toBranch = Branch::find($request->get('branch_id'));
         $request->merge([
-            "branch_id" => $branch->id,
-            "company_id" => $branch->company->id,
+            "to_branch_id" => $toBranch->id,
+            "company_id" => $toBranch->company->id,
+            "to_branch_id" => $fromBranch->id,
             "type" => "out",
             "is_transaction" => true,
             "status" => "pending",
@@ -463,15 +465,15 @@ class TomatoPosController extends Controller
 
         $request->validate([
             "to_branch_id" => "required|int|exists:branches,id",
-            'items' => ['required','array','min:1', function($attribute, $value, $fail) use ($request){
+            'items' => ['required','array','min:1', function($attribute, $value, $fail) use ($request, $toBranch){
                 if($request->get('type') === 'out'){
                     foreach ($request->get('items') as $item){
-                        $ckeckQTY = TomatoInventory::checkBranchInventory($item['item']['id'], $request->get('branch_id'), $item['qty'], $item['options']??[]);
+                        $ckeckQTY = TomatoInventory::checkBranchInventory($item['item']['id'], $toBranch->id, $item['qty'], $item['options']??[]);
                         if(!$ckeckQTY){
                             $fail(__('Sorry The Product') . ': ' . $item['item']['name'][app()->getLocale()] . ' '. __('Do Not have this QTY'));
                         }
                         else {
-                            $checkIfExists = TomatoInventory::checkInventoryItemQty($item['item']['id'], $request->get('branch_id'), $item['qty'], $item['options']??[]);
+                            $checkIfExists = TomatoInventory::checkInventoryItemQty($item['item']['id'], $toBranch->id, $item['qty'], $item['options']??[]);
                             if(!$checkIfExists){
                                 $fail(__('Sorry The Product') . ': ' . $item['item']['name'][app()->getLocale()] . ' '. __('Has Pending QTY on the Inventory Movement'));
                             }

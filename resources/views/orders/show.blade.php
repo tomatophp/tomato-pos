@@ -24,14 +24,8 @@
         <div dir="rtl"  style="margin-left: auto; margin-right:auto; display:block">
         <div>
             <img style="width: 100px" src="{{setting('site_logo')}}"></div><br>
-            @foreach(\TomatoPHP\TomatoOrders\Models\Branch::where('company_id', $order->branch->company_id) as $branch)
-                <div>{{$branch->address}}</div>
-                <div><b>{{$branch->phone}}</b></div>
-                <hr>
-            @endforeach
-        <br>
         <h3 style="border: 1px solid #000000; text-align: center; padding: 5px;">{{__('Order')}} {{$order->uuid}}</h3>
-
+        <br>
         <p style="margin-top: -15px;">{{__('Printed At')}}: {{\Carbon\Carbon::now()->format('d/m/Y g:i A')}}</p>
         <p style="margin-top: -15px;">{{__('Cashier')}}: {{ \Modules\TomatoPos\Entities\PosSetting::where('key', 'cashier_name')->where('user_id', auth('web')->user()->id)->first()?->value }}
         </p>
@@ -133,6 +127,16 @@
 
             </tbody>
         </table>
+            <br>
+            @php $branches = \TomatoPHP\TomatoOrders\Models\Branch::where('company_id', $order->branch->company_id)->get() @endphp
+        @foreach($branches as $key=>$branch)
+            <div>{{$branch->name}}</div>
+            <div>{{$branch->address}}</div>
+            <div><b>{{$branch->phone}}</b></div>
+            @if($key != $branches->count()-1)
+                <hr>
+            @endif
+        @endforeach
         <hr style="width: 100%">
         <img src="data:image/png;base64,{{\DNS1D::getBarcodePNG((string)$order->uuid, 'C128',1,44,array(1,1,1), true)}}" alt="barcode"  />
             <br />

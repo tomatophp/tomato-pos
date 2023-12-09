@@ -42,6 +42,9 @@
                </x-splade-cell>
                <x-splade-cell actions>
                    <div class="flex justify-start gap-2">
+                       <a href="{{route('admin.pos.orders.show', $item->id)}}" target="_blank" class="px-2 text-primary-500">
+                           <x-heroicon-s-printer class="h-6 w-6"/>
+                       </a>
                        <x-tomato-admin-button success type="icon" :href="route('admin.orders.show', $item->id)">
                            <x-heroicon-s-eye class="h-6 w-6"/>
                        </x-tomato-admin-button>

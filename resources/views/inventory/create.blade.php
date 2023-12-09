@@ -21,7 +21,7 @@
     ]">
 
         <x-splade-input disabled name="uuid" placeholder="{{__('UUID')}}" label="{{__('UUID')}}" />
-        <x-splade-select :label="__('Transaction to branch')" :placeholder="__('Transaction to branch')" name="to_branch_id" remote-url="/admin/branches/api" remote-root="data" option-label="name" option-value="id" choices/>
+        <x-splade-select :label="__('Request From Branch')" :placeholder="__('Request From Branch')" name="branch_id" remote-url="/admin/branches/api" remote-root="data" option-label="name" option-value="id" choices/>
         <div>
             <x-tomato-items :options="['item'=>'', 'price'=>0, 'discount'=>0, 'tax'=>0, 'qty'=>1,'total'=>0, 'options' =>(object)[]]" name="items">
                 <div class="grid grid-cols-12 gap-4 border-b py-4 my-4">
