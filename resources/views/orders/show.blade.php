@@ -27,7 +27,7 @@
         <h3 style="border: 1px solid #000000; text-align: center; padding: 5px;">{{__('Order')}} {{$order->uuid}}</h3>
         <br>
         <p style="margin-top: -15px;">{{__('Printed At')}}: {{\Carbon\Carbon::now()->format('d/m/Y g:i A')}}</p>
-        <p style="margin-top: -15px;">{{__('Cashier')}}: {{ \Modules\TomatoPos\Entities\PosSetting::where('key', 'cashier_name')->where('user_id', auth('web')->user()->id)->first()?->value }}
+        <p style="margin-top: -15px;">{{__('Cashier')}}: {{ \TomatoPHP\TomatoPos\Models\PosSetting::where('key', 'cashier_name')->where('user_id', auth('web')->user()->id)->first()?->value }}
         </p>
         <table border="0" style="width: 100%">
             <tbody>
@@ -141,7 +141,7 @@
         <img src="data:image/png;base64,{{\DNS1D::getBarcodePNG((string)$order->uuid, 'C128',1,44,array(1,1,1), true)}}" alt="barcode"  />
             <br />
             <h4>
-                {{ \Modules\TomatoPos\Entities\PosSetting::where('key', 'branch_note')->where('user_id', auth('web')->user()->id)->first()?->value }}
+                {{ \TomatoPHP\TomatoPos\Models\PosSetting::where('key', 'branch_note')->where('user_id', auth('web')->user()->id)->first()?->value }}
             </h4>
 
     </div>
