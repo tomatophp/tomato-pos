@@ -128,7 +128,7 @@
             </tbody>
         </table>
             <br>
-            @php $branches = \TomatoPHP\TomatoOrders\Models\Branch::where('company_id', $order->branch->company_id)->get() @endphp
+            @php $branches = \TomatoPHP\TomatoBranches\Models\Branch::where('company_id', $order->branch->company_id)->get() @endphp
         @foreach($branches as $key=>$branch)
             <div>{{$branch->name}}</div>
             <div>{{$branch->address}}</div>

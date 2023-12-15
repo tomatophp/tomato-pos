@@ -40,6 +40,7 @@
         "milon/barcode": "^10.0",
         "tomatophp/console-helpers": "^1.1",
         "tomatophp/tomato-ecommerce": "^1.0",
+        "tomatophp/tomato-branches": "^1.0",
         "tomatophp/tomato-orders": "^1.0",
         "tomatophp/tomato-crm": "^1.1",
         "tomatophp/tomato-products": "^1.0",

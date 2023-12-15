@@ -19,7 +19,7 @@ use TomatoPHP\TomatoInventory\Facades\TomatoInventory;
 use TomatoPHP\TomatoInventory\Models\Inventory;
 use TomatoPHP\TomatoInventory\Tables\InventoryTable;
 use TomatoPHP\TomatoOrders\Facades\TomatoOrdering;
-use TomatoPHP\TomatoOrders\Models\Branch;
+use TomatoPHP\TomatoBranches\Models\Branch;
 use TomatoPHP\TomatoOrders\Models\Order;
 use TomatoPHP\TomatoOrders\Tables\OrderTable;
 use TomatoPHP\TomatoProducts\Models\Product;
