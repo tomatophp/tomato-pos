@@ -1,5 +1,5 @@
 <!-- right sidebar -->
-<div class="w-5/12 flex flex-col bg-blue-gray-50 h-full bg-white pr-4 pl-2 py-4">
+<div class="w-5/12 flex flex-col bg-primary-50 h-full bg-white pr-4 pl-2 py-4">
     <div class="bg-white rounded-3xl flex flex-col h-full shadow">
         <!-- empty cart -->
         @if(!count($cart))
@@ -24,7 +24,7 @@
                     </div>
                     <div class="flex-grow px-8 text-right text-lg py-4 relative">
                         <!-- trash button -->
-                        <x-splade-link confirm method="delete" href="{{route('admin.pos.cart.clear')}}"  class="qty text-blue-gray-300 hover:text-pink-500 focus:outline-none">
+                        <x-splade-link confirm method="delete" href="{{route('admin.pos.cart.clear')}}"  class="qty text-primary-300 hover:text-pink-500 focus:outline-none">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -35,7 +35,7 @@
                 <div class="flex-1 w-full px-4 overflow-auto">
                     @foreach($cart as $item)
                         <x-splade-form preserve-scroll submit-on-change method="POST" action="{{route('admin.pos.cart.update', $item->id)}}" :default="$item->toArray()">
-                            <div class="flex flex-col gap-4 justify-center select-none mb-3 bg-blue-gray-50 rounded-lg w-full text-blue-gray-700 py-2 px-2 ">
+                            <div class="flex flex-col gap-4 justify-center select-none mb-3 bg-primary-50 rounded-lg w-full text-primary-700 py-2 px-2 ">
                                 <div class="flex justify-start gap-2">
                                     <img src="{{$item->product->getMedia('featured_image')?->first()->getUrl() ?? url('placeholder.webp')}}" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                                     <div class="flex-grow">
@@ -52,13 +52,13 @@
                                 </div>
                                 <div>
                                     <div class="grid grid-cols-3 gap-2 ml-2">
-                                        <button @click.prevent="form.qty=parseFloat(form.qty) - 1" class="qty rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none">
+                                        <button @click.prevent="form.qty=parseFloat(form.qty) - 1" class="qty rounded-lg text-center py-1 text-white bg-danger-600 hover:bg-danger-700 focus:outline-none">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                                             </svg>
                                         </button>
                                         <x-splade-input name="qty"   type="number" class="bg-white text-black rounded-lg text-center shadow focus:outline-none focus:shadow-lg text-sm" />
-                                        <button @click.prevent="form.qty=parseFloat(form.qty) + 1" class="qty rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none">
+                                        <button @click.prevent="form.qty=parseFloat(form.qty) + 1" class="qty rounded-lg text-center py-1 text-white bg-primary-600 hover:bg-primary-700 focus:outline-none">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                             </svg>
@@ -78,13 +78,13 @@
 
             <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
                 <div v-show="!form.attachCustomer">
-                    <div class="flex mb-3 text-lg font-semibold text-blue-gray-700">
+                    <div class="flex mb-3 text-lg font-semibold text-primary-700">
                         <div>{{__('TOTAL')}}</div>
                         <div class="text-right w-full">
                             {!! dollar($cart->sum('total')) !!}
                         </div>
                     </div>
-                    <div  class="mb-3 text-blue-gray-700 px-3 pt-2 pb-3 rounded-lg bg-blue-gray-50" v-if="form.payment_method === 'cash'">
+                    <div  class="mb-3 text-primary-700 px-3 pt-2 pb-3 rounded-lg bg-primary-50" v-if="form.payment_method === 'cash'">
                         <div class="flex text-lg font-semibold">
                             <div class="flex-grow text-left">{{__('CASH')}}</div>
                             <div class="flex text-right">
