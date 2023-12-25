@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use TomatoPHP\TomatoInventory\Models\InventoryItem;
 use TomatoPHP\TomatoPos\Models\PosSetting;
 use ProtoneMedia\Splade\Facades\Splade;
 use ProtoneMedia\Splade\Facades\Toast;
@@ -49,9 +50,51 @@ class TomatoPosController extends Controller
         $products = \TomatoPHP\TomatoProducts\Models\Product::query();
 
         if($request->has('search') && $request->get('search')){
-            $products->where('name', 'LIKE','%'.$request->get('search').'%')
-                ->orWhere('barcode', $request->get('search'))
-                ->orWhere('sku', $request->get('search'));
+            if(Str::of($request->get('search'))->contains('INVENTORY-')){
+                $getProduct = InventoryItem::where('uuid', $request->get('search'))->first();
+                if($getProduct){
+                    $productItem = Product::find($getProduct->item_id);
+                    $currentSession = $this->getSessionID();
+
+                    $cart = Cart::query()
+                        ->where('session_id', $currentSession)
+                        ->where('product_id', $productItem->id)
+                        ->whereJsonContains('options', $getProduct->options ?? [])
+                        ->first();
+
+                    if($cart){
+                        $cart->qty+=1;
+                        $cart->save();
+                    }
+                    else {
+                        $price = ProductsServices::getProductPrice($productItem->id, $getProduct->options ?? []);
+
+                        $cart = new Cart();
+                        $cart->product_id = $productItem->id;
+                        $cart->session_id = $currentSession;
+                        $cart->item = $productItem->name;
+                        $cart->price = $price->price;
+                        $cart->vat = $price->vat;
+                        $cart->discount = $price->discount;
+                        $cart->qty = 1;
+                        $cart->total = $price->collect();
+                        if($productItem->has_options){
+                            $cart->options = $getProduct->options ?? [];
+                        }
+                        else {
+                            $cart->options = [];
+                        }
+
+                        $cart->save();
+                    }
+                }
+
+            }
+            else {
+                $products->where('name', 'LIKE','%'.$request->get('search').'%')
+                    ->orWhere('barcode', $request->get('search'))
+                    ->orWhere('sku', $request->get('search'));
+            }
         }
 
         $products = $products->where('is_activated', 1)->get();
@@ -116,7 +159,7 @@ class TomatoPosController extends Controller
         }
         else {
             $request->merge([
-               "total" => (($cart->price + $cart->vat) - $cart->discount) * $request->get('qty')
+                "total" => (($cart->price + $cart->vat) - $cart->discount) * $request->get('qty')
             ]);
 
             $cart->update($request->all());
@@ -425,18 +468,18 @@ class TomatoPosController extends Controller
 
     public function accountStore(Request $request){
         $request->validate([
-           "name" => "required|string|max:255",
-           "email" => "nullable|email|string|max:255",
-           "phone" => "required|string|max:14|unique:accounts,username",
-           "address" => "nullable|string",
+            "name" => "required|string|max:255",
+            "email" => "nullable|email|string|max:255",
+            "phone" => "required|string|max:14|unique:accounts,username",
+            "address" => "nullable|string",
         ]);
 
         $account = config('tomato-crm.model')::create([
-           "name" => $request->get('name'),
-           "email" => $request->get('email'),
-           "phone" => $request->get('phone'),
-           "address" => $request->get('address'),
-           "username" => $request->get('phone'),
+            "name" => $request->get('name'),
+            "email" => $request->get('email'),
+            "phone" => $request->get('phone'),
+            "address" => $request->get('address'),
+            "username" => $request->get('phone'),
         ]);
 
         Toast::success(__('Account Added Success'))->autoDismiss(2);
