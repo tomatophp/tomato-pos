@@ -2,7 +2,7 @@
 
 @section('content')
    <div class="h-full w-full">
-       <div class="bg-primary-50 border rounded-xl my-4 mx-4">
+       <div class="border dark:text-gray-200 bg-gray-100 border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-xl my-4 mx-4">
            <div class="flex justify-between gap-4 my-4 mx-4">
                <div>
                    <h1 class="text-xl font-bold">{{__('Today POS Orders')}} [{{__('Today')}}: {{request()->get('date') ?: \Carbon\Carbon::now()->toDateString()}}]</h1>
@@ -13,12 +13,12 @@
                </div>
            </div>
            <div class="my-4 mx-4 grid grid-cols-2 gap-4">
-               <div class="bg-white shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
+               <div class="bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
                    <i class="bx bx-rocket bx-md"></i>
                    <h1 class="text-xl font-bold">{{$table->query->count()}}</h1>
                    <h1 class="text-md">{{__('Today Orders')}}</h1>
                </div>
-               <div class="bg-white shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
+               <div class="bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
                    <i class="bx bx-money bx-md"></i>
                    <h1 class="text-xl font-bold">{!! dollar($table->query->sum('total')) !!}</h1>
                    <h1 class="text-md">{{__('Today Total Money')}}</h1>

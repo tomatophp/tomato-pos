@@ -1,33 +1,28 @@
+
 <!-- right sidebar -->
-<div class="w-5/12 flex flex-col bg-primary-50 h-full bg-white pr-4 pl-2 py-4">
-    <div class="bg-white rounded-3xl flex flex-col h-full shadow">
+<div class="w-5/12 flex flex-col h-full pr-4 pl-2 py-4">
+    <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-lg flex flex-col h-full shadow">
         <!-- empty cart -->
         @if(!count($cart))
             <div  class="flex-1 w-full p-4 opacity-25 select-none flex flex-col flex-wrap content-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <p>
-                    {{__('CART EMPTY')}}
+                <i class="bx bx-cart bx-lg text-center"></i>
+                <p class="font-bold">
+                    {{__('Cart is empty')}}
                 </p>
             </div>
         @else
             <!-- cart items -->
             <div  class="flex-1 flex flex-col overflow-auto">
-                <div class="h-16 text-center flex justify-center">
-                    <div class="pl-8 text-left text-lg py-4 relative">
+                <div class="flex justify-between p-4">
+                    <div class="relative w-full ">
                         <!-- cart icon -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                        <div  class="text-center absolute bg-cyan-500 text-white w-5 h-5 text-xs p-0 leading-5 rounded-full -right-2 top-3">{{$cart->count()}}</div>
+                        <i class="bx bx-cart bx-sm"></i>
+                        <div  class="text-center absolute bg-primary-500 text-white w-5 h-5 text-xs p-0 leading-5 rounded-full left-5 -top-1">{{$cart->count()}}</div>
                     </div>
-                    <div class="flex-grow px-8 text-right text-lg py-4 relative">
+                    <div class="relative">
                         <!-- trash button -->
-                        <x-splade-link confirm method="delete" href="{{route('admin.pos.cart.clear')}}"  class="qty text-primary-300 hover:text-pink-500 focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                            </svg>
+                        <x-splade-link confirm method="delete" href="{{route('admin.pos.cart.clear')}}"  class="qty hover:text-danger-500 focus:outline-none">
+                            <i class="bx bx-trash bx-sm"></i>
                         </x-splade-link>
                     </div>
                 </div>
@@ -35,7 +30,7 @@
                 <div class="flex-1 w-full px-4 overflow-auto">
                     @foreach($cart as $item)
                         <x-splade-form preserve-scroll submit-on-change method="POST" action="{{route('admin.pos.cart.update', $item->id)}}" :default="$item->toArray()">
-                            <div class="flex flex-col gap-4 justify-center select-none mb-3 bg-primary-50 rounded-lg w-full text-primary-700 py-2 px-2 ">
+                            <div class="flex flex-col gap-4 justify-center select-none mb-3 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg w-full text-primary-700 dark:text-gray-200 p-3 ">
                                 <div class="flex justify-start gap-2">
                                     <img src="{{$item->product->getMedia('featured_image')?->first()->getUrl() ?? url('placeholder.webp')}}" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                                     <div class="flex-grow">
@@ -53,15 +48,11 @@
                                 <div>
                                     <div class="grid grid-cols-3 gap-2 ml-2">
                                         <button @click.prevent="form.qty=parseFloat(form.qty) - 1" class="qty rounded-lg text-center py-1 text-white bg-danger-600 hover:bg-danger-700 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
-                                            </svg>
+                                            <i class="bx bx-minus"></i>
                                         </button>
-                                        <x-splade-input name="qty"   type="number" class="bg-white text-black rounded-lg text-center shadow focus:outline-none focus:shadow-lg text-sm" />
+                                        <x-splade-input name="qty" type="number" />
                                         <button @click.prevent="form.qty=parseFloat(form.qty) + 1" class="qty rounded-lg text-center py-1 text-white bg-primary-600 hover:bg-primary-700 focus:outline-none">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-3 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
+                                            <i class="bx bx-plus"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -78,22 +69,22 @@
 
             <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
                 <div v-show="!form.attachCustomer">
-                    <div class="flex mb-3 text-lg font-semibold text-primary-700">
+                    <div class="flex mb-3 text-lg font-semibold text-primary-700 dark:text-gray-200">
                         <div>{{__('TOTAL')}}</div>
-                        <div class="text-right w-full">
+                        <div class="text-right w-full font-bold">
                             {!! dollar($cart->sum('total')) !!}
                         </div>
                     </div>
-                    <div  class="mb-3 text-primary-700 px-3 pt-2 pb-3 rounded-lg bg-primary-50" v-if="form.payment_method === 'cash'">
-                        <div class="flex text-lg font-semibold">
-                            <div class="flex-grow text-left">{{__('CASH')}}</div>
-                            <div class="flex text-right">
-                                <input v-model="form.cash" type="text" class="w-28 text-right bg-white shadow rounded-lg focus:bg-white focus:shadow-lg px-2 focus:outline-none">
+                    <div  class="mb-3 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-primary-700 dark:text-gray-200 px-3 py-4 rounded-lg " v-if="form.payment_method === 'cash'">
+                        <div class="flex justify-between text-lg font-semibold">
+                            <div class="flex flex-col justify-center items-center">{{__('CASH')}}</div>
+                            <div>
+                                <input v-model="form.cash" type="text" class="fi-input block w-full border-none bg-white dark:bg-gray-800 py-1.5 text-base text-gray-950 outline-none transition duration-75 placeholder:text-gray-400 disabled:text-gray-500 disabled:[-webkit-text-fill-color:theme(colors.gray.500)] disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.400)] dark:text-white dark:placeholder:text-gray-500 dark:disabled:text-gray-400 dark:disabled:[-webkit-text-fill-color:theme(colors.gray.400)] dark:disabled:placeholder:[-webkit-text-fill-color:theme(colors.gray.500)] sm:text-sm sm:leading-6 ps-3 pe-3 focus:ring-2 ring-primary-500 focus:ring-2 focus:ring-primary-500 rounded-lg">
                             </div>
                         </div>
-                        <hr class="my-2">
+                        <div class="my-2 border-t border-gray-200 dark:border-gray-700"></div>
                         <div class="grid grid-cols-2 gap-1 mt-2">
-                            <button @click.prevent="form.cash = parseFloat(form.cash)+5" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash = parseFloat(form.cash)+5" class="qty bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -101,7 +92,7 @@
                                 </span>
                                 </div>
                             </button>
-                            <button @click.prevent="form.cash = parseFloat(form.cash)+10" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash = parseFloat(form.cash)+10" class="qty bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -109,7 +100,7 @@
                                 </span>
                                 </div>
                             </button>
-                            <button @click.prevent="form.cash = parseFloat(form.cash)+20" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash = parseFloat(form.cash)+20" class="qty bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -117,7 +108,7 @@
                                 </span>
                                 </div>
                             </button>
-                            <button @click.prevent="form.cash += 50" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash += 50" class="qty bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -125,7 +116,7 @@
                                 </span>
                                 </div>
                             </button>
-                            <button @click.prevent="form.cash = parseFloat(form.cash)+100" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash = parseFloat(form.cash)+100" class="qty bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -133,7 +124,7 @@
                                 </span>
                                 </div>
                             </button>
-                            <button @click.prevent="form.cash = parseFloat(form.cash)+200" class="qty bg-white rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
+                            <button @click.prevent="form.cash = parseFloat(form.cash)+200" class="qty bg-white dark:bg-gray-800 dark:text-gray-200 dark:border-gray-700 border border-gray-200 rounded-lg shadow hover:shadow-lg focus:outline-none inline-block px-2 py-1 text-sm">
                                 <div class="flex justify-center gap-2">
                                     <span>+</span>
                                     <span>
@@ -144,11 +135,11 @@
                         </div>
                     </div>
                     <div
-                        class="flex mb-3 text-lg font-semibold bg-primary-50 text-primary-700 rounded-lg py-2 px-3"
+                        class="flex justify-between mb-3 text-lg font-semibold bg-gray-100 border border-gray-200 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-200 text-primary-700 rounded-lg py-2 px-3"
                     >
-                        <div class="text-primary-800">{{__('CHANGE')}}</div>
+                        <div>{{__('CHANGE')}}</div>
                         <div
-                            class="text-right flex-grow text-primary-600">
+                            class="font-bold">
                             @{{ form.total - form.cash }}<small class="font-bold">{{setting('local_currency')}}</small>
                         </div>
                     </div>

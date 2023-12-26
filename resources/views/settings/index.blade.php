@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="h-full w-full">
-        <div class="bg-primary-50 border rounded-xl my-4 mx-4">
+        <div class="border dark:text-gray-200 bg-gray-100 border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-xl my-4 mx-4">
             <div class="flex justify-between gap-4 my-4 mx-4">
                 <div>
                     <h1 class="text-xl font-bold">{{__('POS Settings')}}</h1>

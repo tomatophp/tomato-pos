@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
+use TomatoPHP\TomatoCategory\Models\Category;
 use TomatoPHP\TomatoInventory\Models\InventoryItem;
 use TomatoPHP\TomatoPos\Models\PosSetting;
 use ProtoneMedia\Splade\Facades\Splade;
@@ -86,6 +87,10 @@ class TomatoPosController extends Controller
                         }
 
                         $cart->save();
+
+                        $request->merge([
+                            "search" => null
+                        ]);
                     }
                 }
 
@@ -97,16 +102,24 @@ class TomatoPosController extends Controller
             }
         }
 
-        $products = $products->where('is_activated', 1)->get();
+        $products->where('is_activated', 1);
+
+        if($request->has('category_id') && $request->get('category_id')){
+            $products->where('category_id', $request->get('category_id'));
+        }
+
+        $products = $products->paginate(12);
 
         $currentSession = $this->getSessionID();
 
         $cart = \TomatoPHP\TomatoEcommerce\Models\Cart::where('session_id', $currentSession)->orderBy('id', 'desc')->get();
 
+        $categories = Category::where('for', 'product-categories')->where('activated', 1)->get();
         return view('tomato-pos::index', [
             "products" => $products,
             "cart" => $cart,
-            "currentSession" => $currentSession
+            "currentSession" => $currentSession,
+            "categories" => $categories
         ]);
     }
 

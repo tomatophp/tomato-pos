@@ -1,5 +1,5 @@
 <div class="flex flex-row w-auto pl-4 pr-2 py-4">
-    <div class="flex flex-col items-center py-4 flex-shrink-0 w-20 bg-primary-500 rounded-3xl">
+    <div class="flex flex-col items-center py-4 flex-shrink-0 w-20 bg-primary-500 rounded-lg">
         <x-splade-link href="{{route('admin')}}"
                        class="flex items-center justify-center h-12 w-12 bg-cyan-50 text-cyan-700 rounded-full">
             @if(setting('site_logo'))
