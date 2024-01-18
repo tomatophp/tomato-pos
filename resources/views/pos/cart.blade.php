@@ -32,7 +32,7 @@
                         <x-splade-form preserve-scroll submit-on-change method="POST" action="{{route('admin.pos.cart.update', $item->id)}}" :default="$item->toArray()">
                             <div class="flex flex-col gap-4 justify-center select-none mb-3 bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg w-full text-primary-700 dark:text-gray-200 p-3 ">
                                 <div class="flex justify-start gap-2">
-                                    <img src="{{$item->product->getMedia('featured_image')?->first()->getUrl() ?? url('placeholder.webp')}}" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
+                                    <img src="{{$item->product->getMedia('featured_image')->first()?->getUrl() ?? url('placeholder.webp')}}" alt="" class="rounded-lg h-10 w-10 bg-white shadow mr-2">
                                     <div class="flex-grow">
                                         <div class="flex justify-start gap-2">
                                             <h5 class="text-sm">{{$item->item}}</h5>
