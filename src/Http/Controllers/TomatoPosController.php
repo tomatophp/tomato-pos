@@ -400,6 +400,12 @@ class TomatoPosController extends Controller
             "uuid" => "required|string|unique:orders,uuid"
         ]);
 
+        if($request->get('payment_method') === 'credit'){
+            $request->validate([
+                "payment_vendor_id" => "required|string",
+            ]);
+        }
+
 
 
         if($request->get('account_id')){
@@ -449,7 +455,9 @@ class TomatoPosController extends Controller
             "is_approved" => true,
             "is_payed" => true,
             "source" => "POS",
-            "payment_method" => $request->get('payment_method')
+            "payment_method" => $request->get('payment_method'),
+            "payment_vendor_id" => $request->get('payment_vendor_id') ?: null,
+            "payment_vendor" => $request->get('payment_vendor_id') ? "POS" : null
         ]);
 
 

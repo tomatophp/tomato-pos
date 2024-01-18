@@ -192,6 +192,9 @@
                         <option value="cash">{{__('Cash')}}</option>
                         <option value="credit">{{__('Credit')}}</option>
                     </x-splade-select>
+                    <div v-if="form.payment_method === 'credit'">
+                        <x-splade-input name="payment_vendor_id" label="{{__('Credit Payment Transaction ID')}}" />
+                    </div>
                     <x-tomato-admin-button warning type="button" @click.prevent="form.attachCustomer = !form.attachCustomer">
                         {{__('Attach Account')}}
                     </x-tomato-admin-button>

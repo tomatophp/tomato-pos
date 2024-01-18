@@ -28,7 +28,12 @@
         <br>
         <p style="margin-top: -15px;">{{__('Printed At')}}: {{\Carbon\Carbon::now()->format('d/m/Y g:i A')}}</p>
         <p style="margin-top: -15px;">{{__('Cashier')}}: {{ \TomatoPHP\TomatoPos\Models\PosSetting::where('key', 'cashier_name')->where('user_id', auth('web')->user()->id)->first()?->value }}
+        <p style="margin-top: -15px;">{{__('Payment Method')}}: {{ $order->payment_method }}
         </p>
+            @if($order->payment_method === 'credit')
+                <p style="margin-top: -15px;">{{__('Payment Transaction ID')}}: {{ $order->payment_vendor_id }}
+                </p>
+            @endif
         <table border="0" style="width: 100%">
             <tbody>
             @if($order->name || $order->phone)
