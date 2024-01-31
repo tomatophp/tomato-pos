@@ -5,7 +5,7 @@
             @if(setting('site_logo'))
                 <img src="{{setting('site_logo')}}" class="p-2" alt="{{setting('site_name')}}" />
             @else
-                <x-application-logo class="w-6 h-6 p-2" />
+                <x-tomato-application-logo class="w-6 h-6 p-2" />
             @endif
         </x-splade-link>
         <ul class="flex flex-col space-y-2 mt-12">
