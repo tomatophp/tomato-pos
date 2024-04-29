@@ -2,11 +2,9 @@
 
 @section('content')
     <div class="h-full w-full">
-        <div class="border dark:text-gray-200 bg-gray-100 border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-xl my-4 mx-4">
-            <div class="flex justify-between gap-4 my-4 mx-4">
-                <div>
-                    <h1 class="text-xl font-bold">{{__('POS Settings')}}</h1>
-                </div>
+        <div class="flex justify-between gap-4 my-4 mx-4">
+            <div>
+                <h1 class="text-xl font-bold">{{__('POS Settings')}}</h1>
             </div>
         </div>
         <div class="my-4 mx-4">
@@ -28,7 +26,7 @@
                     <x-splade-textarea autosize name="branch_note" label="{{__('Branch Note')}}" placeholder="{{__('Branch Note')}}" />
 
                     <div class="flex items-center gap-4">
-                        <x-splade-submit :label="trans('tomato-admin::global.save')" />
+                        <x-tomato-admin-submit spinner :label="trans('tomato-admin::global.save')" />
                     </div>
                 </x-splade-form>
             </x-tomato-settings-card>

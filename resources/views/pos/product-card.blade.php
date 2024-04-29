@@ -2,12 +2,20 @@
     'product_id' => $product->id
 ]">
     <button
-        class="play select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 border dark:text-gray-200 shadow hover:shadow-lg"
+        class="w-full play select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 dark:border-zinc-700 border-zinc-200 border dark:text-zinc-200 shadow hover:shadow-lg"
         type="submit"
         @click.prevent="@js($product->has_options) ? $splade.modal('{{route('admin.pos.cart.options')}}?product_id={{$product->id}}') : form.submit()"
     >
-        <img src="{{ $product->getMedia('featured_image')->first()?->getUrl() ?? url('placeholder.webp') }}" alt="{{$product->name}}">
-        <div class="flex flex-col gap-2 text-sm py-4 border-t border-gray-200 dark:border-gray-700">
+        @if($product->getMedia('featured_image')->first()?->getUrl())
+            <img src="{{ $product->getMedia('featured_image')->first()?->getUrl() ?? url('placeholder.webp') }}" alt="{{$product->name}}">
+        @else
+            <div class="w-full h-24 flex flex-col justify-center items-center">
+                <div>
+                    <i class="bx bx-cart text-3xl"></i>
+                </div>
+            </div>
+        @endif
+            <div class="flex flex-col gap-2 text-sm py-4 border-t border-zinc-200 dark:border-zinc-700">
             <p class="flex-grow truncate font-bold text-lg">
                 {{$product->name}}
             </p>

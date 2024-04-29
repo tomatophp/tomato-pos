@@ -2,28 +2,30 @@
 
 @section('content')
     <div class="h-full w-full">
-        <div class="border dark:text-gray-200 bg-gray-100 border-gray-200 dark:bg-gray-900 dark:border-gray-700 rounded-xl my-4 mx-4">
-            <div class="flex justify-between gap-4 my-4 mx-4">
-                <div>
-                    <h1 class="text-xl font-bold">{{__('Inventory Requests')}} [{{__('Today')}}: {{request()->get('date') ?: \Carbon\Carbon::now()->toDateString()}}]</h1>
-                </div>
-                <div class="flex justify-start gap-4">
-                    <x-tomato-admin-button warning :href="route('admin.pos.inventory') . '?date=' . (request()->get('date') ? \Carbon\Carbon::parse(request()->get('date')) : \Carbon\Carbon::now())->addDays(-1)->toDateString()">{{__('<-')}}</x-tomato-admin-button>
-                    <x-tomato-admin-button danger :href="route('admin.pos.inventory') . '?date=' . (request()->get('date') ? \Carbon\Carbon::parse(request()->get('date')) : \Carbon\Carbon::now())->addDays(1)->toDateString()">{{__('->')}}</x-tomato-admin-button>
-                    <x-tomato-admin-button modal :href="route('admin.pos.inventory.create')">{{__('New Request')}}</x-tomato-admin-button>
-                </div>
+        <div class="flex flex-col justify-center md:flex-row md:justify-between gap-4 my-4 mx-4">
+            <div>
+                <h1 class="text-xl font-bold">{{__('Inventory Requests')}} [{{__('Today')}}: {{request()->get('date') ?: \Carbon\Carbon::now()->toDateString()}}]</h1>
             </div>
-            <div class="my-4 mx-4 grid grid-cols-2 gap-4">
-                <div class="bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
-                    <i class="bx bxs-truck bx-md"></i>
-                    <h1 class="text-xl font-bold">{{$table->query->count()}}</h1>
-                    <h1 class="text-md">{{__('Today Requests')}}</h1>
-                </div>
-                <div class="bg-white dark:bg-gray-800 dark:border-gray-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border">
-                    <i class="bx bx-money bx-md"></i>
-                    <h1 class="text-xl font-bold">{!! dollar($table->query->sum('total')) !!}</h1>
-                    <h1 class="text-md">{{__('Today Total Money')}}</h1>
-                </div>
+            <div class="flex justify-start gap-4">
+                <x-tomato-admin-button warning :href="route('admin.pos.inventory') . '?date=' . (request()->get('date') ? \Carbon\Carbon::parse(request()->get('date')) : \Carbon\Carbon::now())->addDays(-1)->toDateString()">
+                    <i class='bx bx-chevron-right'></i>
+                </x-tomato-admin-button>
+                <x-tomato-admin-button danger :href="route('admin.pos.inventory') . '?date=' . (request()->get('date') ? \Carbon\Carbon::parse(request()->get('date')) : \Carbon\Carbon::now())->addDays(1)->toDateString()">
+                    <i class='bx bx-chevron-left'></i>
+                </x-tomato-admin-button>
+                <x-tomato-admin-button modal :href="route('admin.pos.inventory.create')">{{__('New Request')}}</x-tomato-admin-button>
+            </div>
+        </div>
+        <div class="my-4 mx-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700-zinc-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border dark:border-zinc-700">
+                <i class="bx bxs-truck bx-md"></i>
+                <h1 class="text-xl font-bold">{{$table->query->count()}}</h1>
+                <h1 class="text-md">{{__('Today Requests')}}</h1>
+            </div>
+            <div class="bg-white dark:bg-zinc-800 dark:border dark:border-zinc-700-zinc-700 shadow-sm rounded-xl w-full text-center flex flex-col justify-center p-4 border dark:border-zinc-700">
+                <i class="bx bx-money bx-md"></i>
+                <h1 class="text-xl font-bold">{!! dollar($table->query->sum('total')) !!}</h1>
+                <h1 class="text-md">{{__('Today Total Money')}}</h1>
             </div>
         </div>
 
@@ -38,13 +40,13 @@
                     </x-tomato-admin-table-action>
                 </x-slot:actions>
                 <x-splade-cell items>
-                    <table class="border min-w-full divide-y divide-gray-200 dark:divide-gray-600 bg-white dark:bg-gray-700">
-                        <tbody class="divide-y divide-gray-200 dark:divide-gray-600 bg-white dark:bg-gray-800">
+                    <table class="border dark:border-zinc-700 min-w-full divide-y divide-zinc-200 dark:divide-zinc-600 bg-white dark:bg-zinc-700">
+                        <tbody class="divide-y divide-zinc-200 dark:divide-zinc-600 bg-white dark:bg-zinc-800">
                         @foreach($item->inventoryItems as $invItem)
-                            <tr class="hover:bg-gray-100 dark:hover:bg-gray-600">
-                                <td class="border p-2">
+                            <tr class="hover:bg-zinc-100 dark:hover:bg-zinc-600">
+                                <td class="border dark:border-zinc-700 p-2">
                                     <div>{{$invItem->item}}</div>
-                                    <div class="text-gray-400 flex justify-start gap-2">
+                                    <div class="text-zinc-400 flex justify-start gap-2">
                                         @foreach($invItem->options ?? [] as $option)
                                             <div>
                                                 {{ str($option)->upper() }}
@@ -52,9 +54,9 @@
                                         @endforeach
                                     </div>
                                 </td>
-                                <td class="border p-2 font-bold">{{$invItem->qty}}</td>
+                                <td class="border dark:border-zinc-700 p-2 font-bold">{{$invItem->qty}}</td>
                                 @if($item->status !== 'canceled')
-                                    <td class="border p-2">
+                                    <td class="border dark:border-zinc-700 p-2">
                                         @if(!$invItem->is_activated)
                                             <x-tomato-admin-tooltip text="{{__('Item Pending')}}">
                                                 <i class="bx bx-x text-danger-500"></i>
